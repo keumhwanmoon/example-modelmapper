@@ -43,9 +43,7 @@ public class Main3 {
                                         // skip().setOrderDate(null);
                                         skip(source.getOrderDate(), destination.getOrderDate());
                                         // 코드는 매핑하지 않는다.
-
                                         skip(source.getCode(), destination.getCode());
-
                                     }
                                 }
         );
@@ -58,8 +56,5 @@ public class Main3 {
         System.out.println("orderDTO.getOrderDate() = " + orderDTO.getOrderDate());
         // Code는 Null 이다.
         System.out.println("orderDTO.getCode() = " + orderDTO.getCode());
-
-
-
     }
 }
