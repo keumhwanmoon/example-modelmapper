@@ -2,6 +2,7 @@ import dto.OrderDTO;
 import entity.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.convention.MatchingStrategies;
 
 import java.util.Date;
 
@@ -34,19 +35,7 @@ public class Main3 {
         order.setOrderDate(new Date());
         order.setCode(code);
 
-        modelMapper.addMappings(new PropertyMap<Order, OrderDTO>() {
-                                    @Override
-                                    protected void configure() {
-                                        // City를 Street로 매핑한다.
-                                        map().setBillingAddressStreet(source.getBillingAddress().getCity());
-                                        // OrderDate는 매핑하지 않는다.
-                                        // skip().setOrderDate(null);
-                                        skip(source.getOrderDate(), destination.getOrderDate());
-                                        // 코드는 매핑하지 않는다.
-                                        skip(source.getCode(), destination.getCode());
-                                    }
-                                }
-        );
+        modelMapper.addMappings(createPropertyMap());
 
         OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
 
@@ -56,5 +45,21 @@ public class Main3 {
         System.out.println("orderDTO.getOrderDate() = " + orderDTO.getOrderDate());
         // Code는 Null 이다.
         System.out.println("orderDTO.getCode() = " + orderDTO.getCode());
+    }
+
+    private static PropertyMap<Order, OrderDTO> createPropertyMap() {
+        return new PropertyMap<Order, OrderDTO>() {
+                                    @Override
+                                    protected void configure() {
+                                        // City를 Street로 매핑한다.
+                                        //map().setBillingAddressStreet(source.getBillingAddress().getCity());
+                                        map(source.getBillingAddress().getCity(), destination.getBillingAddressStreet());
+                                        // OrderDate는 매핑하지 않는다.
+                                        // skip().setOrderDate(null);
+                                        skip(source.getOrderDate(), destination.getOrderDate());
+                                        // 코드는 매핑하지 않는다.
+                                        skip(source.getCode(), destination.getCode());
+                                    }
+                                };
     }
 }
